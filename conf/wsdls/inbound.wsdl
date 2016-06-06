@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+
+<definitions name="InboundInterfaceAPI"
+             targetNamespace="urn:toatech:InboundInterface:1.0"
+             xmlns:typens="urn:toatech:InboundInterface:1.0"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             >
+
+  <types>
+    <xsd:schema targetNamespace="urn:toatech:InboundInterface:1.0">
+
+
+      <xsd:complexType name="InboundInterfaceElement">
+        <xsd:all>
+          <xsd:element name="user" type="typens:UserElement" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="head" type="typens:HeadElement" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="data" type="typens:DataElement" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+
+      <xsd:complexType name="InboundInterfaceResponseElement">
+        <xsd:all>
+          <xsd:element name="user" type="typens:UserElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="head" type="typens:HeadResponseElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="data" type="typens:DataResponseElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="report" type="typens:ReportElement" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="UserElement">
+        <xsd:all>
+          <xsd:element name="now" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="login" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="company" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="auth_string" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+
+      <xsd:complexType name="HeadResponseElement">
+        <xsd:all>
+          <xsd:element name="id" type="xsd:string" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="date" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="HeadElement">
+        <xsd:all>
+          <xsd:element name="processing_mode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="upload_type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="id" type="xsd:string" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="date" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="allow_change_date" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="appointment" type="typens:AppointmentSettings" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventory" type="typens:InventorySettings" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="properties_mode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="provider_group" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="default_appointment_pool" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="AppointmentSettings">
+        <xsd:sequence>
+          <xsd:element name="keys" type="typens:KeysArray" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="action_if_completed" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="InventorySettings">
+        <xsd:all>
+          <xsd:element name="keys" type="typens:KeysArray" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="upload_type" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+
+      <xsd:complexType name="KeysArray">
+        <xsd:sequence>
+          <xsd:element name="field" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="DataElement">
+        <xsd:all>
+          <xsd:element name="commands" type="typens:CommandsArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="providers" type="typens:ProvidersArray" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="DataResponseElement">
+        <xsd:all>
+          <xsd:element name="commands" type="typens:CommandsResponseArray"  minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="providers" type="typens:ProvidersResponseArray"  minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="CommandsArray">
+        <xsd:sequence>
+          <xsd:element name="command" type="typens:CommandElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="LinksArray">
+        <xsd:sequence>
+          <xsd:element name="erase_links" type="typens:EraseLinksElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="link_start_together" type="typens:AddLinkElement" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="link_start_after" type="typens:AddLinkElement" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="link" type="typens:LinkElement" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="EraseLinksElement">
+        <xsd:sequence>
+          <xsd:element name="link_type"       type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="AddLinkElement">
+        <xsd:all>
+          <xsd:element name="appt_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="customer_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="LinkElement">
+        <xsd:all>
+          <xsd:element name="appt_number"     type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="customer_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="name"            type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="link_type"       type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="min_interval"    type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="max_interval"    type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="FilesArray">
+        <xsd:sequence>
+          <xsd:element name="file" type="typens:FileElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="FileElement">
+        <xsd:all>
+          <xsd:element name="property_label" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="filename" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="mime_type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="encoding" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="contents" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProviderPreferenceElement">
+        <xsd:all>
+          <xsd:element name="external_id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="type"        type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProviderPreferencesArray">
+        <xsd:sequence>
+          <xsd:element name="preference" type="typens:ProviderPreferenceElement" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="RequiredInventoryElement">
+        <xsd:all>
+          <xsd:element name="type"     type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="model"    type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="quantity" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="RequiredInventoriesArray">
+        <xsd:sequence>
+          <xsd:element name="required_inventory" type="typens:RequiredInventoryElement" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProvidersArray">
+        <xsd:sequence>
+          <xsd:element name="provider" type="typens:ProviderElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="CommandsResponseArray">
+        <xsd:sequence>
+          <xsd:element name="command" type="typens:CommandResponseElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProvidersResponseArray">
+        <xsd:sequence>
+          <xsd:element name="provider" type="typens:ProviderResponseElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="CommandElement">
+        <xsd:all>
+          <xsd:element name="date" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="time" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="external_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="fallback_external_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="appointment" type="typens:AppointmentElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="CommandResponseElement">
+        <xsd:all>
+          <xsd:element name="date" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="external_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="fallback_external_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="appointment" type="typens:AppointmentResponseElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesResponseArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="report" type="typens:ReportElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="AppointmentElement">
+        <xsd:all>
+          <xsd:element name="appt_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="team_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="customer_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="worktype" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="worktype_label" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="service_window_start" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="service_window_end" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="sla_window_start" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="sla_window_end" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="time_of_booking" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="time_slot" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="duration" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="message_methods" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="phone" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="email" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="cell" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="city" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="state" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="zip" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="language" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="reminder_time" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="time_zone" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="coordx" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="coordy" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="points" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="properties" type="typens:PropertiesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="links" type="typens:LinksArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="files" type="typens:FilesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="provider_preferences" type="typens:ProviderPreferencesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="required_inventories" type="typens:RequiredInventoriesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="action_if_completed" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="AppointmentResponseElement">
+        <xsd:all>
+          <xsd:element name="appt_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="customer_number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="aid" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesResponseArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="report" type="typens:ReportElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProviderElement">
+        <xsd:all>
+          <xsd:element name="external_id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="fallback_external_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="appointment" type="typens:AppointmentElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ProviderResponseElement">
+        <xsd:all>
+          <xsd:element name="external_id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="appointment" type="typens:AppointmentResponseElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="inventories" type="typens:InventoriesResponseArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="report" type="typens:ReportElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="PropertiesArray">
+        <xsd:sequence>
+          <xsd:element name="property" type="typens:PropertyElement" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="InventoriesArray">
+        <xsd:sequence>
+          <xsd:element name="inventory" type="typens:InventoryElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="InventoriesResponseArray">
+        <xsd:sequence>
+          <xsd:element name="inventory" type="typens:InventoryResponseElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="PropertyElement">
+        <xsd:all>
+          <xsd:element name="label" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="InventoryElement">
+        <xsd:sequence>
+          <xsd:element name="properties" type="typens:PropertiesArray" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="files" type="typens:FilesArray" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="InventoryResponseElement">
+        <xsd:all>
+          <xsd:element name="properties" type="typens:PropertiesArray" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="report" type="typens:ReportElement" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="userdata" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="invid" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ReportElement">
+        <xsd:sequence>
+          <xsd:element name="message" type="typens:ReportMessageElement" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ReportMessageElement">
+        <xsd:all>
+          <xsd:element name="result"      type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="type"        type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="code"        type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:element name="inbound_interface_request"      type="typens:InboundInterfaceElement" />
+      <xsd:element name="inbound_interface_response"     type="typens:InboundInterfaceResponseElement"/>
+    </xsd:schema>
+  </types>
+
+  <message name="InboundInterfaceRequestMsg">
+    <part name="params" element="typens:inbound_interface_request"/>
+  </message>
+
+  <message name="InboundInterfaceResponseMsg">
+    <part name="params" element="typens:inbound_interface_response"/>
+  </message>
+
+  <portType name="InboundInterfacePort">
+    <operation name="inbound_interface">
+      <input  message="typens:InboundInterfaceRequestMsg"/>
+      <output message="typens:InboundInterfaceResponseMsg"/>
+    </operation>
+  </portType>
+
+  <binding name="InboundInterfaceBinding" type="typens:InboundInterfacePort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <operation name="inbound_interface">
+      <soap:operation soapAction="InboundInterfaceService/inbound_interface" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="InboundInterfaceService">
+    <port name="InboundInterfacePort" binding="typens:InboundInterfaceBinding">
+      <soap:address location="https://api.etadirect.com/soap/inbound/"/>
+    </port>
+  </service>
+
+</definitions>

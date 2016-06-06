@@ -1,5 +1,6 @@
 package modules;
 
+import com.etadirect.api.InboundInterfacePort;
 import com.global.weather.GlobalWeatherSoap;
 import com.google.inject.AbstractModule;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -15,6 +16,7 @@ public class ApplicationContextBinderModule extends AbstractModule {
 
         // Guice instance binding
         bind(GlobalWeatherSoap.class).toInstance((GlobalWeatherSoap) applicationContext.getBean("globalWeatherSoapClient"));
+        bind(InboundInterfacePort.class).toInstance((InboundInterfacePort) applicationContext.getBean("etadirectInboundSoapClient"));
     }
 
 }

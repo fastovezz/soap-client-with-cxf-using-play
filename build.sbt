@@ -1,3 +1,5 @@
+import com.ebiznext.sbt.plugins.CxfWsdl2JavaPlugin.cxf
+
 name := """soap-client-with-cxf-using-play"""
 
 version := "1.0-SNAPSHOT"
@@ -14,6 +16,9 @@ libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-rt-transports-http" % cxfVersion,
   "org.springframework" % "spring-context" % "4.2.6.RELEASE",
 
+  "org.apache.commons" % "commons-csv" % "1.2",
+  "commons-codec" % "commons-codec" % "1.10",
+
   // Test dependencies
   "junit" % "junit" % "4.12" % "test",
   "org.assertj" % "assertj-core" % "3.4.1" % "test",
@@ -24,5 +29,6 @@ libraryDependencies ++= Seq(
 Seq(cxf.settings: _*)
 cxf.cxfVersion := cxfVersion
 cxf.wsdls := Seq(
-  cxf.Wsdl((resourceDirectory in Compile).value / "wsdls/globalweather.wsdl", Seq("-mark-generated", "-p", "com.global.weather"), "globalweather")
+  cxf.Wsdl((resourceDirectory in Compile).value / "wsdls/globalweather.wsdl", Seq("-mark-generated", "-p", "com.global.weather"), "globalweather"),
+  cxf.Wsdl((resourceDirectory in Compile).value / "wsdls/inbound.wsdl", Seq("-mark-generated", "-p", "com.etadirect.api"), "etadirect")
 )

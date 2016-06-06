@@ -14,6 +14,16 @@
         <property name="location" value="#{systemProperties['config.resource'] ?: 'application.conf'}"/>
     </bean>
 
+    <jaxws:client id="etadirectInboundSoapClient"
+                  serviceClass="com.etadirect.api.InboundInterfacePort"
+                  address="${etadirect.api.host}/soap/inbound/"/>
+
+    <http-conf:conduit name="${etadirect.api.host}/.*">
+        <http-conf:client ConnectionTimeout="${etadirect.api.connection.timeout}"
+                          ReceiveTimeout="${etadirect.api.response.timeout}"
+                          AllowChunking="false"/>
+    </http-conf:conduit>
+
     <jaxws:client id="globalWeatherSoapClient"
                   serviceClass="com.global.weather.GlobalWeatherSoap"
                   address="${global.weather.host}/globalweather.asmx"/>
