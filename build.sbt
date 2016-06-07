@@ -19,6 +19,13 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-csv" % "1.2",
   "commons-codec" % "commons-codec" % "1.10",
 
+  "org.webjars.bower" % "angularjs" % "1.5.6",
+  "org.webjars.bower" % "angular-route" % "1.5.6",
+
+  "org.webjars.bower" % "jquery" % "2.2.4",
+  "org.webjars" % "requirejs" % "2.2.0",
+  "org.webjars" % "bootstrap" % "3.3.6",
+
   // Test dependencies
   "junit" % "junit" % "4.12" % "test",
   "org.assertj" % "assertj-core" % "3.4.1" % "test",
